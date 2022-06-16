@@ -47,6 +47,7 @@ class HomePage extends StatelessWidget{
                       return const NotesView();
                     }
                     else if(user!=null){
+                      devtools.log("Verify your email id");
                       return const verifyEmailView();
                     }
                     else{
@@ -102,8 +103,8 @@ class _NotesViewState extends State<NotesView> {
                     return;
                   }
                   break;
-              }
-            },
+                }
+              },
             itemBuilder: (context){
               return const [
                 PopupMenuItem<MenuAction>(
@@ -124,7 +125,7 @@ Future<bool> showLogoutDialog(BuildContext context){
   return showDialog<bool>(context: context, builder: (context){
     return AlertDialog(
       title: const Text('Log Out'),
-      content: const Text('Are you sure you want to LogOut'),
+      content: const Text('Are you sure you want to Logout?'),
       actions: [
         TextButton(onPressed: (){
           Navigator.of(context).pop(false);
