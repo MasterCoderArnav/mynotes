@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/view/registerView.dart';
 import 'package:mynotes/view/loginView.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,9 +20,9 @@ class myApp extends StatelessWidget{
       title: 'Flutter Demo',
       home: HomePage(),
       routes: {
-        '/login' : (context) => const LoginView(),
-        '/register': (context) => const RegisterView(),
-        '/notes': (context) => const NotesView(),
+        loginRoute : (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
       },
     );
   }
@@ -94,7 +95,7 @@ class _NotesViewState extends State<NotesView> {
                   final shouldLogout = await showLogoutDialog(context);
                   if(shouldLogout){
                     await FirebaseAuth.instance.signOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
                   }
                   else{
                     return;
