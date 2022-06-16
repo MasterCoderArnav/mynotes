@@ -19,10 +19,10 @@ class _verifyEmailViewState extends State<verifyEmailView> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Text('Please verify your email'),
-            const SizedBox(height:10.0),
+            const Text("We've sent you an email verification please verify it"),
+            const Center(child: Text('If you have\'nt recieved your verification email click below\nBut please check your spam folder as well')),
             TextButton(
               onPressed: () async{
                 final user = FirebaseAuth.instance.currentUser;
