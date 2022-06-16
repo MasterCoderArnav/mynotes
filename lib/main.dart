@@ -3,7 +3,9 @@ import 'package:mynotes/view/registerView.dart';
 import 'package:mynotes/view/loginView.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mynotes/firebase_options.dart';
+import 'package:mynotes/view/verify_email_view.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   runApp(myApp());
@@ -33,14 +35,18 @@ class HomePage extends StatelessWidget{
           builder: (context, snapshot){
               switch(snapshot.connectionState){
                   case ConnectionState.done:
-                    // final user = FirebaseAuth.instance.currentUser;
-                    // final userVerified = user?.emailVerified ?? false;
-                    // if(userVerified){
-                    //   print(user);
-                    // }
-                    // else{
-                    //   return verifyEmailView();
-                    // }
+                    final user = FirebaseAuth.instance.currentUser;
+                    final userVerified = user?.emailVerified ?? false;
+                    if(userVerified){
+                      print("User is verified");
+                      return const Text('Done');
+                    }
+                    else if(user!=null){
+                      return const verifyEmailView();
+                    }
+                    else{
+                      return const LoginView();
+                    }
                     // return Scaffold(
                     //   appBar: AppBar(
                     //     title: Text('Home Page'),
