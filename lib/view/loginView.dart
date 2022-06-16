@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: const Text('Sign In'),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -60,7 +61,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
-            SizedBox(height: 20.0,),
+            const SizedBox(height: 20.0,),
             TextField(
               controller: _password,
               obscureText: true,
@@ -92,26 +93,24 @@ class _LoginViewState extends State<LoginView> {
                 try {
                   final email = _email.text;
                   final password = _password.text;
-                  final userCredential = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                      email: email, password: password);
-                  print(userCredential);
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+                  Navigator.of(context).pushNamedAndRemoveUntil('/notes', (route) => false);
                 } on FirebaseAuthException catch (e) {
                   if (e.code == 'wrong-password') {
-                    print('Wrong Password');
+                    devtools.log('Wrong Password');
                   }
                   else if (e.code == 'invalid-email') {
-                    print("Invalid Email");
+                    devtools.log("Invalid Email");
                   }
                   else {
-                    print(e.code);
+                    devtools.log(e.code);
                   }
                 } catch (e) {
-                  print("Something bad happened");
-                  print(e);
+                  devtools.log("Something bad happened");
+                  devtools.log(e.toString());
                 }
               },
-              child: Text('Sign In'),
+              child: const Text('Sign In'),
             ),
             TextButton(
               onPressed: () {

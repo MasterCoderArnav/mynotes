@@ -19,8 +19,9 @@ class myApp extends StatelessWidget{
       title: 'Flutter Demo',
       home: HomePage(),
       routes: {
-        '/login' : (context) => LoginView(),
-        '/register': (context) => RegisterView(),
+        '/login' : (context) => const LoginView(),
+        '/register': (context) => const RegisterView(),
+        '/notes': (context) => const NotesView(),
       },
     );
   }
@@ -85,7 +86,8 @@ class _NotesViewState extends State<NotesView> {
         centerTitle: true,
         elevation: 0.0,
         actions: <Widget>[
-          PopupMenuButton<MenuAction>(onSelected: (value) async{
+          PopupMenuButton<MenuAction>(
+            onSelected: (value) async{
               devtools.log(value.toString());
               switch(value){
                 case MenuAction.logout:
