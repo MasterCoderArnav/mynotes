@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mynotes/services/auth_service.dart';
 
 class verifyEmailView extends StatefulWidget {
   const verifyEmailView({Key? key}) : super(key: key);
@@ -25,9 +25,8 @@ class _verifyEmailViewState extends State<verifyEmailView> {
             const Center(child: Text('If you have\'nt recieved your verification email click below\nBut please check your spam folder as well')),
             TextButton(
               onPressed: () async{
-                final user = FirebaseAuth.instance.currentUser;
-                print(user!.uid);
-                await user.sendEmailVerification();
+                final user = AuthService.firebase().currentUser;
+                await AuthService.firebase().sendEmailVerification();
               },
               child: const Text('Verify Email'),
             ),
