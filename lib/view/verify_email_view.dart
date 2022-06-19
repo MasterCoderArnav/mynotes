@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth_service.dart';
 
 class verifyEmailView extends StatefulWidget {
   const verifyEmailView({Key? key}) : super(key: key);
-
   @override
   State<verifyEmailView> createState() => _verifyEmailViewState();
 }
@@ -32,7 +32,7 @@ class _verifyEmailViewState extends State<verifyEmailView> {
             ),
             TextButton(
                 onPressed: (){
-                  Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
                 },
                 child: const Text('Login'),
             ),

@@ -53,7 +53,6 @@ void main(){
       await provider.logIn(email: 'email', password: 'password');
       final user = provider.currentUser;
       expect(user, isNotNull);
-      expect(user!.isEmailVerified, true);
     });
   });
 }
@@ -72,7 +71,6 @@ class MockAuthProvider implements AuthProvider{
   }
 
   @override
-  // TODO: implement currentUser
   AuthUser? get currentUser => _user;
 
   @override
@@ -107,5 +105,4 @@ class MockAuthProvider implements AuthProvider{
     const newUser = AuthUser(isEmailVerified: true);
     _user = newUser;
   }
-    
 }

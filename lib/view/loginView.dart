@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/utilities/show_error_dialog.dart';
@@ -53,7 +54,7 @@ class _LoginViewState extends State<LoginView> {
                     borderSide: BorderSide(
                       color: Colors.white,
                       width: 2.0,
-                    )
+                    ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -95,19 +96,14 @@ class _LoginViewState extends State<LoginView> {
                 try {
                   final email = _email.text;
                   final password = _password.text;
-                  await AuthService.firebase().logIn(
-                      email: email, password: password);
-                  final user = AuthService
-                      .firebase()
-                      .currentUser;
+                  await AuthService.firebase().logIn(email: email, password: password);
+                  final user = AuthService.firebase().currentUser;
                   bool isVerified = user?.isEmailVerified ?? false;
                   if (isVerified) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        notesRoute, (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
                   }
                   else {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        verifyRoute, (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route) => false);
                   }
                 }
                 on UserNotFoundAuthException{

@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget{
             future: AuthService.firebase().initialise(),
           builder: (context, snapshot){
               switch(snapshot.connectionState){
-                  case ConnectionState.done:
+                case ConnectionState.done:
                     final user = AuthService.firebase().currentUser;
                     final userVerified = user?.isEmailVerified ?? false;
                     if(userVerified){
