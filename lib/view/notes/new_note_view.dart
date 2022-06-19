@@ -1,0 +1,112 @@
+import 'package:flutter/material.dart';
+import 'package:mynotes/services/auth_service.dart';
+import 'package:mynotes/services/crud/notes_service.dart';
+
+class newNoteView extends StatefulWidget {
+  const newNoteView({Key? key}) : super(key: key);
+
+  @override
+  State<newNoteView> createState() => _newNoteViewState();
+}
+
+class _newNoteViewState extends State<newNoteView> {
+  DatabaseNote? _note;
+  late final NoteService _noteService;
+  late final TextEditingController _textEditingController;
+  Future<DatabaseNote> createNewNote() async{
+    final existingNote = _note;
+    if(existingNote!=null){
+      return existingNote;
+    }
+    final currentUser = AuthService.firebase().currentUser!;
+    final email = currentUser.email!;
+    final owner = await _noteService.getUser(email: email);
+    return _noteService.createNote(owner: owner);
+  }
+  void _deleteNoteIfTextIsEmpty(){
+    final note = _note;
+    if(_textEditingController.text.isEmpty&&note!=null){
+      _noteService.deleteNote(id: note.id);
+    }
+  }
+  void _saveNoteIfTextNotEmpty() async{
+    final note = _note;
+    final text = _textEditingController.text;
+    if(note!=null&&text.isNotEmpty){
+      _noteService.updateNote(note: note, text: text);
+    }
+  }
+
+  void _textControllerListener() async{
+    final note = _note;
+    if(note==null){
+      return;
+    }
+    final text = _textEditingController.text;
+    await _noteService.updateNote(note: note, text: text);
+  }
+
+  void _setupTextControllerListener(){
+    _textEditingController.removeListener(_textControllerListener);
+    _textEditingController.addListener(_textControllerListener);
+  }
+
+  void initState(){
+    _noteService = NoteService();
+    _textEditingController = TextEditingController();
+    super.initState();
+  }
+
+  void dispose(){
+    _deleteNoteIfTextIsEmpty();
+    _saveNoteIfTextNotEmpty();
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Note'),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: FutureBuilder(
+              future: createNewNote(),
+              builder: (context, snapshot){
+                switch(snapshot.connectionState){
+                  case ConnectionState.done:
+                    _note = snapshot.data as DatabaseNote;
+                    _setupTextControllerListener();
+                    return Container(
+                      margin: const EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: _textEditingController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your note here',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 2.0,
+                            )
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.pink,
+                                width: 2.0,
+                              )
+                          ),
+                        ),
+                      ),
+                    );
+                  default:
+                    return const CircularProgressIndicator();
+                }
+              }
+          ),
+    );
+  }
+}

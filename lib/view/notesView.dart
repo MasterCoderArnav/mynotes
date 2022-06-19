@@ -33,10 +33,16 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Main UI'),
-        centerTitle: true,
+        title: const Text('Your Notes'),
+        centerTitle: false,
         elevation: 0.0,
         actions: <Widget>[
+          IconButton(
+            onPressed: (){
+              Navigator.of(context).pushNamed(newNotesRoute);
+            },
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async{
               devtools.log(value.toString());
@@ -61,7 +67,7 @@ class _NotesViewState extends State<NotesView> {
                 ),
               ];
             },
-          )
+          ),
         ],
       ),
       body: FutureBuilder(
@@ -74,6 +80,7 @@ class _NotesViewState extends State<NotesView> {
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
+                      case ConnectionState.active:
                         return const Text('Waiting for the notes to appear');
                       default:
                         return const CircularProgressIndicator();
