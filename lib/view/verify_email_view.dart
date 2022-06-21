@@ -25,7 +25,6 @@ class _verifyEmailViewState extends State<verifyEmailView> {
             const Center(child: Text('If you have\'nt recieved your verification email click below\nBut please check your spam folder as well')),
             TextButton(
               onPressed: () async{
-                final user = AuthService.firebase().currentUser;
                 await AuthService.firebase().sendEmailVerification();
               },
               child: const Text('Verify Email'),
@@ -34,7 +33,7 @@ class _verifyEmailViewState extends State<verifyEmailView> {
                 onPressed: (){
                   Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
                 },
-                child: const Text('Login'),
+                child: const Text('Restart'),
             ),
           ],
         ),

@@ -5,7 +5,6 @@ import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
 import 'package:mynotes/view/notes/notes_list_view.dart';
-
 import '../utilities/showLogoutDialog.dart';
 
 class NotesView extends StatefulWidget {
@@ -22,7 +21,6 @@ class _NotesViewState extends State<NotesView> {
   @override
   void initState(){
     _notesService = NoteService();
-    _notesService.open();
     super.initState();
   }
 
@@ -53,7 +51,6 @@ class _NotesViewState extends State<NotesView> {
                   else{
                     return;
                   }
-                  break;
               }
             },
             itemBuilder: (context){

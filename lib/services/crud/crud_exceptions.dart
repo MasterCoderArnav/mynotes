@@ -7,3 +7,4 @@ class CouldNotGetUser implements Exception{}
 class CouldNotDeleteNote implements Exception{}
 class CouldNotGetNote implements Exception{}
 class CouldNotUpdateNote implements Exception{}
+class UserShouldBeSetBeforeReadingNotes implements Exception{}
