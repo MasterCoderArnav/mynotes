@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mynotes/services/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth_exceptions.dart';
+import 'package:mynotes/services/bloc/auth_bloc.dart';
+import 'package:mynotes/services/bloc/auth_event.dart';
+// import 'package:mynotes/services/bloc/auth_state.dart';
 import '../utilities/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -95,15 +99,16 @@ class _LoginViewState extends State<LoginView> {
                 try {
                   final email = _email.text;
                   final password = _password.text;
-                  await AuthService.firebase().logIn(email: email, password: password);
-                  final user = AuthService.firebase().currentUser;
-                  bool isVerified = user?.isEmailVerified ?? false;
-                  if (isVerified) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
-                  }
-                  else {
-                    Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route) => false);
-                  }
+                  context.read<AuthBloc>().add(AuthEventLogin(email: email, password: password));
+                  // await AuthService.firebase().logIn(email: email, password: password);
+                  // final user = AuthService.firebase().currentUser;
+                  // bool isVerified = user?.isEmailVerified ?? false;
+                  // if (isVerified) {
+                  //   Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                  // }
+                  // else {
+                  //   Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route) => false);
+                  // }
                 }
                 on UserNotFoundAuthException{
                   await ErrorDialog(context, 'User Not Found');
