@@ -73,7 +73,6 @@ class _NotesViewState extends State<NotesView> {
                   case ConnectionState.active:
                     if(snapshot.hasData){
                       final allNote = snapshot.data as Iterable<CloudNote>;
-                      print(allNote);
                       return NotesListView(notes: allNote, onDeleteNote: (note) async{
                         await _notesService.deleteNote(documentId: note.documentID);
                         }, onTap: (note){

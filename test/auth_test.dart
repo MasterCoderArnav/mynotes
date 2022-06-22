@@ -24,10 +24,10 @@ void main(){
       expect(provider.currentUser, null);
     });
     
-    test('Should be able to initialise in less than 2 seconds', () async{
+    test('Should be able to initialise in less than 3 seconds', () async{
       await provider.initialise();
       expect(provider.isInitialised, true);
-    }, timeout: const Timeout(Duration(seconds: 2)));
+    }, timeout: const Timeout(Duration(seconds: 3)));
     
     test('Create user should delegate to log in', () async{
       final badEmailUser = provider.createUser(email: 'foo@bar.com', password: 'anypassword');

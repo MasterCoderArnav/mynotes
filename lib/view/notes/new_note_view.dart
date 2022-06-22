@@ -30,7 +30,7 @@ class _newNoteViewState extends State<newNoteView> {
       return existingNote;
     }
     final currentUser = AuthService.firebase().currentUser!;
-    final email = currentUser.email;
+    // final email = currentUser.email;
     // final owner = await _noteService.getUser(email: email);
     // final newNote = await _noteService.createNote(owner: owner);
     final userID = currentUser.id;
@@ -69,12 +69,14 @@ class _newNoteViewState extends State<newNoteView> {
     _textEditingController.addListener(_textControllerListener);
   }
 
+  @override
   void initState(){
     _noteService = FirebaseCloudStorage();
     _textEditingController = TextEditingController();
     super.initState();
   }
 
+  @override
   void dispose(){
     _deleteNoteIfTextIsEmpty();
     _saveNoteIfTextNotEmpty();

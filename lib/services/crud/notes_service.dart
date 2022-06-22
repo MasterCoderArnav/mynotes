@@ -65,7 +65,7 @@
 //
 //   List<DatabaseNote> _notes = [];
 //
-//   // final _notesStreamController = StreamController<List<DatabaseNote>>.broadcast();
+//   final _notesStreamController = StreamController<List<DatabaseNote>>.broadcast();
 //   late final StreamController<List<DatabaseNote>> _notesStreamController;
 //   Future<void> _cacheNotes() async{
 //     final allNotes = await getAllNote();
