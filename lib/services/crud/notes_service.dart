@@ -79,7 +79,7 @@
 //     await getNote(id: note.id);
 //     final updateCount = await db.update(noteTable, {
 //       textColumn: text,
-//       isSyncedWithCloudColumn: 0,
+//       isSyncedWithCloudColumn: 1,
 //     }, where: "id = ?", whereArgs: [note.id]);
 //     if(updateCount==0){
 //       throw CouldNotUpdateNote();

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mynotes/enums/menu_action.dart';
 import 'dart:developer' as devtools show log;
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/services/bloc/auth_bloc.dart';
 import 'package:mynotes/services/bloc/auth_event.dart';
-import 'package:mynotes/services/bloc/auth_state.dart';
 import 'package:mynotes/services/cloud/firebase_cloud_storage.dart';
 import 'package:mynotes/view/notes/notes_list_view.dart';
 import '../services/cloud/cloud_note.dart';
@@ -86,10 +86,30 @@ class _NotesViewState extends State<NotesView> {
                       );
                     }
                     else{
-                      return const CircularProgressIndicator();
+                      return Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: SpinKitFoldingCube(
+                            color: Colors.blue[800],
+                            size: 80.0,
+                          ),
+                        ),
+                      );
                     }
                     default:
-                      return const CircularProgressIndicator();
+                      return Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: SpinKitFoldingCube(
+                            color: Colors.blue[800],
+                            size: 80.0,
+                          ),
+                        ),
+                      );
               }
             }
       )

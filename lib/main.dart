@@ -1,8 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/constants/routes.dart';
-import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/services/bloc/auth_bloc.dart';
 import 'package:mynotes/services/bloc/auth_event.dart';
 import 'package:mynotes/services/bloc/auth_state.dart';
@@ -12,15 +10,14 @@ import 'package:mynotes/view/registerView.dart';
 import 'package:mynotes/view/loginView.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mynotes/view/verify_email_view.dart';
-import 'dart:developer' as devtools show log;
 import 'package:mynotes/view/notesView.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(myApp());
+  runApp(MyApp());
 }
 
-class myApp extends StatelessWidget{
+class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -86,6 +83,7 @@ class HomePage extends StatelessWidget{
     //                   return const verifyEmailView();
     //                 }
     //                 else{
+    //                   devtools.log("Login View");
     //                   return const LoginView();
     //                 }
     //               default:

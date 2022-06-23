@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/services/cloud/cloud_note.dart';
 import 'package:share_plus/share_plus.dart';
@@ -136,7 +137,17 @@ class _newNoteViewState extends State<newNoteView> {
                       ),
                     );
                   default:
-                    return const CircularProgressIndicator();
+                    return Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                        child: SpinKitFoldingCube(
+                          color: Colors.blue[800],
+                          size: 80.0,
+                        ),
+                      ),
+                    );
                 }
               }
           ),
