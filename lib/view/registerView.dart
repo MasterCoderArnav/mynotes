@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/services/auth_service.dart';
+import 'package:mynotes/services/bloc/auth_bloc.dart';
+import 'package:mynotes/services/bloc/auth_event.dart';
+import 'package:mynotes/services/bloc/auth_state.dart';
 import '../constants/routes.dart';
 import 'package:mynotes/services/auth_exceptions.dart';
 import '../utilities/error_dialog.dart';
@@ -30,98 +34,96 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-        centerTitle: true,
-      ),
-      body: Container(
-        margin: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                hintText: 'Please enter the email',
-                enabledBorder: OutlineInputBorder(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) async{
+        if(state is AuthStateRegistering){
+          if(state.exception is WeakPasswordAuthException){
+            return await ErrorDialog(context, 'Weak Password');
+          }
+          else if(state.exception is EmailAlreadyInUseAuthException){
+            return await ErrorDialog(context, 'Email already in use');
+          }
+          else if(state.exception is InvalidEmailAuthException){
+            return await ErrorDialog(context, 'Invalid Email');
+          }
+          else if(state.exception is GenericAuthException){
+            return await ErrorDialog(context, 'Authentication Error Occurred');
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Register'),
+          centerTitle: true,
+        ),
+        body: Container(
+          margin: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _email,
+                enableSuggestions: false,
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Please enter the email',
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                        width: 2.0,
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.pink,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0,),
+              TextField(
+                controller: _password,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Please enter the password',
+                  enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.white,
                       width: 2.0,
-                    )
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.pink,
-                    width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.pink,
+                      width: 2.0,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20.0,),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                hintText: 'Please enter the password',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                    width: 2.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.pink,
-                    width: 2.0,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            TextButton(
-              onPressed: () async {
-                try {
+              const SizedBox(height: 20.0,),
+              TextButton(
+                onPressed: () async {
                   final email = _email.text;
                   final password = _password.text;
-                  await AuthService.firebase().createUser(email: email, password: password);
-                  final user = AuthService.firebase().currentUser;
-                  AuthService.firebase().sendEmailVerification();
-                  Navigator.of(context).pushNamed(verifyRoute);
-                }
-                on WeakPasswordAuthException{
-                  await ErrorDialog(context, "Weak Password");
-                }
-                on InvalidEmailAuthException{
-                  await ErrorDialog(context, 'Invalid Email');
-                }
-                on EmailAlreadyInUseAuthException{
-                  await ErrorDialog(context, "Email is already in use");
-                }
-                on GenericAuthException{
-                  await ErrorDialog(context, "Error: Authentication Error");
-                }
-                catch (e) {
-                  await ErrorDialog(context, e.toString());
-                }
-              },
-              child: const Text('Register'),
-            ),
-            const SizedBox(height: 20.0,),
-            TextButton(
-                onPressed: (){
-                  Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                  context.read<AuthBloc>().add(AuthEventRegister(email: email, password: password));
                 },
-                child: const Text('Already registered? Login Here'))
-          ],
+                child: const Text('Register'),
+              ),
+              const SizedBox(height: 20.0,),
+              TextButton(
+                  onPressed: (){
+                    context.read<AuthBloc>().add(const AuthEventLogout());
+                  },
+                  child: const Text('Already registered? Login Here'))
+            ],
+          ),
         ),
       ),
     );

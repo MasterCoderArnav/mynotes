@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart' show immutable;
 import 'package:mynotes/services/auth_user.dart';
+import 'package:equatable/equatable.dart';
 
 @immutable
 abstract class AuthState{
   const AuthState();
 }
-class AuthStateLoading extends AuthState{
-  const AuthStateLoading();
+class AuthStateUninitialised extends AuthState{
+  const AuthStateUninitialised();
+}
+
+class AuthStateRegistering extends AuthState{
+  final Exception? exception;
+  const AuthStateRegistering({required this.exception});
 }
 class AuthStateLoggedIn extends AuthState{
   final AuthUser user;
@@ -15,11 +21,12 @@ class AuthStateLoggedIn extends AuthState{
 class AuthStateNeedsVerification extends AuthState{
   const AuthStateNeedsVerification();
 }
-class AuthStateLoggedOut extends AuthState{
+class AuthStateLoggedOut extends AuthState with EquatableMixin{
   final Exception? exception;
-  const AuthStateLoggedOut({required this.exception});
-}
-class AuthStateLogoutFailure extends AuthState{
-  final Exception exception;
-  const AuthStateLogoutFailure({required this.exception});
+  final bool loadingState;
+  const AuthStateLoggedOut({required this.loadingState,required this.exception});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [exception, loadingState];
 }
