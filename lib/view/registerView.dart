@@ -63,6 +63,7 @@ class _RegisterViewState extends State<RegisterView> {
               TextField(
                 controller: _email,
                 enableSuggestions: false,
+                autofocus: true,
                 autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(

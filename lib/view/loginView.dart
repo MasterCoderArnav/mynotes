@@ -35,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
             if (state.exception is UserNotFoundAuthException) {
-              await ErrorDialog(context, 'User not found');
+              await ErrorDialog(context, 'Cannot find user with given credentials');
             }
             else if (state.exception is WrongPasswordAuthException) {
               await ErrorDialog(context, 'Wrong Credentials');
@@ -58,6 +58,7 @@ class _LoginViewState extends State<LoginView> {
               TextField(
                 controller: _email,
                 enableSuggestions: false,
+                autofocus: true,
                 autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
@@ -78,7 +79,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(height: 10.0,),
               TextField(
                 controller: _password,
                 obscureText: true,
@@ -123,7 +124,13 @@ class _LoginViewState extends State<LoginView> {
                   context.read<AuthBloc>().add(const AuthEventShouldRegister());
                 },
                 child: const Text('Not registered yet? Register Now!'),
-              )
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(const AuthEventForgotPassword());
+                },
+                child: const Text('Forgot Password? Click Here!'),
+              ),
             ],
           ),
         ),

@@ -31,3 +31,9 @@ class AuthStateLoggedOut extends AuthState with EquatableMixin{
   // TODO: implement props
   List<Object?> get props => [exception, isLoading];
 }
+class AuthStateForgotPassword extends AuthState{
+  final Exception? exception;
+  final bool hasSentEmail;
+  final bool isLoading;
+  const AuthStateForgotPassword({required this.exception, required this.hasSentEmail, required this.isLoading}):super(isLoading: isLoading);
+}
