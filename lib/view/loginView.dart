@@ -4,7 +4,6 @@ import 'package:mynotes/services/auth_exceptions.dart';
 import 'package:mynotes/services/bloc/auth_bloc.dart';
 import 'package:mynotes/services/bloc/auth_event.dart';
 import 'package:mynotes/services/bloc/auth_state.dart';
-import 'package:mynotes/utilities/loadingDialog.dart';
 import '../utilities/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -16,7 +15,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
-  CloseDialog? _closeDialogHandler;
   @override
   void initState(){
     _email = TextEditingController();
@@ -36,14 +34,6 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
-            final closeDialog = _closeDialogHandler;
-            if(!state.loadingState&& closeDialog!=null){
-              closeDialog();
-              _closeDialogHandler = null;
-            }
-            else if(state.loadingState&&closeDialog==null){
-              _closeDialogHandler = showLoadingDialog(context: context, text: 'Loading');
-            }
             if (state.exception is UserNotFoundAuthException) {
               await ErrorDialog(context, 'User not found');
             }

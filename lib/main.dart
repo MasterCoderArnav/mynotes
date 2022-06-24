@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/helpers/loading_screen.dart';
 import 'package:mynotes/services/bloc/auth_bloc.dart';
 import 'package:mynotes/services/bloc/auth_event.dart';
 import 'package:mynotes/services/bloc/auth_state.dart';
@@ -42,7 +43,16 @@ class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     context.read<AuthBloc>().add(const AuthEventInitialise());
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state){
+    return BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state){
+          if(state.isLoading){
+            LoadingScreen().show(text: state.loadingText??'Please wait a moment', context: context);
+          }
+          else{
+            LoadingScreen().hide();
+          }
+        },
+        builder: (context, state){
       if(state is AuthStateLoggedIn){
         return const NotesView();
       }
